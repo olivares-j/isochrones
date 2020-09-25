@@ -4,7 +4,7 @@ import os
 import numpy as np
 import pandas as pd
 from isochrones import get_ichrone,SingleStarModel
-from isochrones.priors import GaussianPrior,AVPrior,DistancePrior
+from isochrones.priors import GaussianPrior,FlatPrior
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -14,34 +14,35 @@ import seaborn as sns
 
 #================== Load everything only in master ===================
 #--------------- Observables ----------------------------------
-identifier   = "ID"
+identifier   = "GDR2_ID"
 gaia         = ["parallax","BP","G","RP"]
-gaia_obs     = ["parallax","bp","g","rp"]
-gaia_unc     = ["parallax_error","bp_error","g_error","rp_error"]
+gaia_obs     = ["parallax","BP","G","RP"]
+gaia_unc     = ["parallax_error","e_BP","e_G","e_RP"]
 dosmass      = ["J","H","K"]
-dosmass_obs  = ["Jmag","Hmag","Kmag"]
-dosmass_unc  = ["e_Jmag","e_Hmag","e_Kmag"]
-allwise      = ["W1","W2","W3"]
-allwise_obs  = ["W1mag","W2mag","W3mag"]
-allwise_unc  = ["e_W1mag","e_W2mag","e_W3mag"]
-bands        = ['BP','G','RP','J','H','K']#,'W1','W2','W3']
+dosmass_obs  = ["J","H","Ks"]
+dosmass_unc  = ["e_J","e_H","e_Ks"]
+panstar      = ["PS_g", "PS_r", "PS_i", "PS_z","PS_y"]
+panstar_obs  = ["g_sdss","r_sdss","i_sdss","z_sdss","Y"]
+panstar_unc  = ["e_g_sdss","e_r_sdss","e_i_sdss","e_z_sdss","e_Y"]
+bands        = ['BP','G','RP','J','H','K',"PS_g", "PS_r", "PS_i", "PS_z","PS_y"]
 parameters   = ["age","mass","distance","AV"]
 #---------------------------------------------------------------
 
 #-------------- Get the isochrones ----------------------------
 mist = get_ichrone('mist', bands=bands)
+
+#------- This prints the available photometry ------------------
+# mass, age, feh = (1.03, 9.72, -0.11)
+# print(mist.generate(mass, age, feh, return_dict=True))
+# sys.exit()
 #---------------------------------------------------------------
 
 #-------------- Transform lists -------------------------------
 bands_mag = [ band+"_mag" for band in bands]
-# phot_obs   = sum([gaia_obs,dosmass_obs,allwise_obs],[])
-# phot_unc   = sum([gaia_unc,dosmass_unc,allwise_unc],[])
-# columns_data = sum([[identifier],gaia_obs,dosmass_obs,allwise_obs,
-# 							     gaia_unc,dosmass_unc,allwise_unc],[])
-
-phot_obs   = sum([gaia_obs,dosmass_obs],[])
-phot_unc   = sum([gaia_unc,dosmass_unc],[])
-columns_data = sum([[identifier],gaia_obs,dosmass_obs,gaia_unc,dosmass_unc],[])
+phot_obs  = sum([gaia_obs,dosmass_obs,panstar_obs],[])
+phot_unc  = sum([gaia_unc,dosmass_unc,panstar_unc],[])
+columns_data = sum([[identifier],gaia_obs,dosmass_obs,panstar_obs,
+						gaia_unc,dosmass_unc,panstar_unc],[])
 
 stats_names = sum([[identifier],["mean_"+p for p in parameters],
 					["std_"+p for p in parameters]],[])
@@ -50,19 +51,19 @@ phot_unc.pop(0)
 #--------------------------------------------------------------
 
 #------------ Files -------------------------------
-dir_base   = "/raid/jromero/OCs/Taurus/"
-# dir_base   = "/home/javier/Cumulos/Taurus/run_1/"
-file_data  = dir_base + "members_red.csv"
+dir_base   = "/raid/jromero/OCs/USco/"
+file_data  = dir_base + "members_GDR2_p05_remaining.csv"
 dir_out    = dir_base + "Isochrones/"
 dir_chain  = dir_out  + "chains/"
 dir_plots  = dir_out  + "plots/"
-file_samp  = dir_out  + "samples.h5"
-file_stat  = dir_out  + "statistics.csv"
+file_samp  = dir_out  + "samples_rem.h5"
+file_stat  = dir_out  + "statistics_rem.csv"
 os.makedirs(dir_plots,exist_ok=True)
 #---------------------------------------------------
 
 #------------- Load data --------------------------------
 df = pd.read_csv(file_data,usecols=columns_data)
+df.replace(to_replace=99.0,value=np.nan,inplace=True)
 df.set_index(identifier,inplace=True)
 #---------------------------------------------------------
 
@@ -82,7 +83,7 @@ for ID,datum in df.iterrows():
 		params[true] = (datum[obs],datum[unc])
 
 	#------- Use BP only in bright sources --------------
-	if datum["bp"] > 15.:
+	if datum["BP"] > 15.:
 		del params["BP"]
 	#--------------------------------------------------
 
@@ -96,15 +97,15 @@ for ID,datum in df.iterrows():
 			params[true] = (datum[obs],datum[unc])
 	#---------------------------------------------------------
 
-	# #---------------- AllWISE ----------------------------------
-	# for true,obs,unc in zip(allwise,allwise_obs,allwise_unc):
-	# 	if np.isfinite(datum[obs]):
-	# 		if not np.isfinite(datum[unc]):
-	# 			datum[unc] = 0.2*datum[obs]
+	#---------------- AllWISE ----------------------------------
+	for true,obs,unc in zip(panstar,panstar_obs,panstar_unc):
+		if np.isfinite(datum[obs]):
+			if not np.isfinite(datum[unc]):
+				datum[unc] = 0.2*datum[obs]
 
-	# 	#-------- Add only if observed -------------
-	# 		params[true] = (datum[obs],datum[unc])
-	# #---------------------------------------------------------
+		#-------- Add only if observed -------------
+			params[true] = (datum[obs],datum[unc])
+	#---------------------------------------------------------
 
 	
 	#======================================================
@@ -116,9 +117,9 @@ for ID,datum in df.iterrows():
 	model.mnest_basename = dir_chain+str(ID)+"-"
 
 	#--------- Prior -------------------
-	model.set_prior(age=GaussianPrior(7, 1, bounds=(6,10)),
-			 AV=GaussianPrior(1.5,4, bounds=(0,10)),
-			distance=DistancePrior(500))
+	model.set_prior(age=FlatPrior(bounds=(0,15)),
+			 AV=GaussianPrior(1,4, bounds=(0,10)),
+			distance=GaussianPrior(145,40,bounds=(0,200)))
 
 	#------ Fit ---------------------------------
 	model.fit(n_live_points=1000,verbose=False)
