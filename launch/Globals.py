@@ -40,7 +40,7 @@ stats_names = sum([[identifier],["mean_"+p for p in parameters],
 #--------------------------------------------------------------
 
 #------------ Files -------------------------------
-dir_base   = "/raid/jromero/OCs/Cumulos/USco/Isochrones/"
+dir_base   = "/raid/jromero/OCs/USco/Isochrones/"
 dir_data   = dir_base + "data/"
 dir_chain  = dir_base + "chains/"
 dir_plots  = dir_base + "plots/"
