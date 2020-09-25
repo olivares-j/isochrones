@@ -35,6 +35,11 @@ for ob,un in zip(phot_obs,phot_unc):
 df.dropna(thresh=n_obs_min,subset=phot_obs,inplace=True)
 #----------------------------------------------------------
 
+#---- Minimum uncertainty --------------------------------
+for un in phot_unc:
+	df.loc[:,un] += add_unc
+#----------------------------------------------------------
+
 print("After filtering {0} sources were removed.".format(n_init - len(df)))
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

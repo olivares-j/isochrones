@@ -26,10 +26,11 @@ list_mod  = sum([gaia_mod,dosmass_mod,panstar_mod],[])
 list_obs  = sum([gaia_obs,dosmass_obs,panstar_obs],[])
 list_unc  = sum([gaia_unc,dosmass_unc,panstar_unc],[])
 
-
+#-- Remove parallax from photometry -------
 bands    = list_mod[1:]
 phot_obs = list_obs[1:]
 phot_unc = list_unc[1:]
+#----------------------------------------------
 
 bands_mag = [ band+"_mag" for band in bands]
 
@@ -55,5 +56,7 @@ label_BP = "BP"
 limit_BP = 15.0
 
 n_obs_min = 3 # Minimum number of observed bands
+
+add_unc = 0.05
 
 
