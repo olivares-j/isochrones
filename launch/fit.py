@@ -11,22 +11,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import seaborn as sns
 
+from Globals import *
 
-#================== Load everything only in master ===================
-#--------------- Observables ----------------------------------
-identifier   = "GDR2_ID"
-gaia         = ["parallax","BP","G","RP"]
-gaia_obs     = ["parallax","BP","G","RP"]
-gaia_unc     = ["parallax_error","e_BP","e_G","e_RP"]
-dosmass      = ["J","H","K"]
-dosmass_obs  = ["J","H","Ks"]
-dosmass_unc  = ["e_J","e_H","e_Ks"]
-panstar      = ["PS_g", "PS_r", "PS_i", "PS_z","PS_y"]
-panstar_obs  = ["g_sdss","r_sdss","i_sdss","z_sdss","Y"]
-panstar_unc  = ["e_g_sdss","e_r_sdss","e_i_sdss","e_z_sdss","e_Y"]
-bands        = ['BP','G','RP','J','H','K',"PS_g", "PS_r", "PS_i", "PS_z","PS_y"]
-parameters   = ["age","mass","distance","AV"]
-#---------------------------------------------------------------
 
 #-------------- Get the isochrones ----------------------------
 mist = get_ichrone('mist', bands=bands)
@@ -37,33 +23,14 @@ mist = get_ichrone('mist', bands=bands)
 # sys.exit()
 #---------------------------------------------------------------
 
-#-------------- Transform lists -------------------------------
-bands_mag = [ band+"_mag" for band in bands]
-phot_obs  = sum([gaia_obs,dosmass_obs,panstar_obs],[])
-phot_unc  = sum([gaia_unc,dosmass_unc,panstar_unc],[])
-columns_data = sum([[identifier],gaia_obs,dosmass_obs,panstar_obs,
-						gaia_unc,dosmass_unc,panstar_unc],[])
-
-stats_names = sum([[identifier],["mean_"+p for p in parameters],
-					["std_"+p for p in parameters]],[])
-phot_obs.pop(0)
-phot_unc.pop(0)
-#--------------------------------------------------------------
-
-#------------ Files -------------------------------
-dir_base   = "/raid/jromero/OCs/USco/"
-file_data  = dir_base + "members_GDR2_p05_remaining.csv"
-dir_out    = dir_base + "Isochrones/"
-dir_chain  = dir_out  + "chains/"
-dir_plots  = dir_out  + "plots/"
-file_samp  = dir_out  + "samples_rem.h5"
-file_stat  = dir_out  + "statistics_rem.csv"
-os.makedirs(dir_plots,exist_ok=True)
-#---------------------------------------------------
+#------------ Files -------------------------------------------------
+file_chunk = dir_data + "data_{0}_of_{1}.csv".format(XXX,size)
+file_samp  = dir_base + "samples_{0}_of_{1}.h5".format(XXX,size)
+file_stat  = dir_base + "statistics_{0}_of_{1}.csv".format(XXX,size)
+#-------------------------------------------------------------------
 
 #------------- Load data --------------------------------
-df = pd.read_csv(file_data,usecols=columns_data)
-df.replace(to_replace=99.0,value=np.nan,inplace=True)
+df = pd.read_csv(file_chunk,usecols=columns_data)
 df.set_index(identifier,inplace=True)
 #---------------------------------------------------------
 
@@ -78,39 +45,11 @@ for ID,datum in df.iterrows():
 	params = {'name':ID}
 
 	#=============== Observations =======================
-	#---------------- Gaia ---------------------------
-	for true,obs,unc in zip(gaia,gaia_obs,gaia_unc):
-		params[true] = (datum[obs],datum[unc])
-
-	#------- Use BP only in bright sources --------------
-	if datum["BP"] > 15.:
-		del params["BP"]
-	#--------------------------------------------------
-
-	#---------------- 2MASS ----------------------------------
-	for true,obs,unc in zip(dosmass,dosmass_obs,dosmass_unc):
+	for true,obs,unc in zip(list_mod,list_obs,list_unc):
 		if np.isfinite(datum[obs]):
-			if not np.isfinite(datum[unc]):
-				datum[unc] = 0.1*datum[obs]
-
-		#-------- Add only if observed -------------
 			params[true] = (datum[obs],datum[unc])
-	#---------------------------------------------------------
-
-	#---------------- AllWISE ----------------------------------
-	for true,obs,unc in zip(panstar,panstar_obs,panstar_unc):
-		if np.isfinite(datum[obs]):
-			if not np.isfinite(datum[unc]):
-				datum[unc] = 0.2*datum[obs]
-
-		#-------- Add only if observed -------------
-			params[true] = (datum[obs],datum[unc])
-	#---------------------------------------------------------
-
-	
 	#======================================================
 	
-
 	#------ Start the model ---------------------
 	model = SingleStarModel(mist, **params)
 
