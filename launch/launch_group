@@ -18,6 +18,7 @@ fi
 
 
 TNP="$(grep -m 1 size $GLOBALS | awk '{print $3}')"
+PATH_OUT="$(grep -m 1 dir_base $GLOBALS | awk '{print $3}')"
 #------------------------------------------------------------------
 
 #------- Pre processing ----------------------------------------------------
@@ -29,7 +30,7 @@ for PRC in $(eval echo "{1..$TNP}")
 do
 	echo "Launching part $PRC of $TNP"
 	sed s/XXX/$PRC/g fit.py > tmp.py
-	python tmp.py >> "log_out_"$PRC"_of_"$TNP 2>> "log_error_"$PRC"_of_"$TNP &
+	python tmp.py >> $PATH_OUT"log_out_"$PRC"_of_"$TNP 2>> $PATH_OUT"log_error_"$PRC"_of_"$TNP &
 	sleep 30
 	rm tmp.py
 done
