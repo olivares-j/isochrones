@@ -57,7 +57,7 @@ for ID,datum in df.iterrows():
 
 	#--------- Prior -------------------
 	model.set_prior(age=FlatPrior(bounds=(0,15)),
-			 AV=GaussianPrior(1,4, bounds=(0,10)),
+			 AV=GaussianPrior(1.5,1, bounds=(0,10)),
 			distance=GaussianPrior(145,40,bounds=(0,200)))
 
 	#------ Fit ---------------------------------
