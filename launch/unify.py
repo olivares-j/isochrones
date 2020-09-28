@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import h5py
 
+from Globals import *
 
 #------------ Files -------------------------------------------------
 file_samples = dir_base + "samples_all.h5"
