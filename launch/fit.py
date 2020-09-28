@@ -56,7 +56,7 @@ for ID,datum in df.iterrows():
 	model.mnest_basename = dir_chain+str(ID)+"-"
 
 	#--------- Prior -------------------
-	model.set_prior(age=FlatPrior(bounds=(0,15)),
+	model.set_prior(age=AgePrior(),
 			 AV=GaussianPrior(1.5,1, bounds=(0,10)),
 			distance=GaussianPrior(145,40,bounds=(0,200)))
 
