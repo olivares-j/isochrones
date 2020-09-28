@@ -4,7 +4,7 @@ import os
 import numpy as np
 import pandas as pd
 from isochrones import get_ichrone,SingleStarModel
-from isochrones.priors import GaussianPrior,FlatPrior
+from isochrones.priors import GaussianPrior,AgePrior
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
