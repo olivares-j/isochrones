@@ -4,7 +4,9 @@ import numpy as np
 import pandas as pd
 import h5py
 
+
 from Globals import *
+
 
 #------------ Files -------------------------------------------------
 file_samples = dir_base + "samples_all.h5"
@@ -21,19 +23,22 @@ for i in range(1,size+1):
 	#-----------------------------------------------------------------
 
 	#------------- Load data frames into list --------------------------------
-	dfs.append(pd.read_csv(file_stat))
+	dfi = pd.read_csv(file_stat)
+	dfi.set_index(identifier,inplace=True)
+	dfs.append(dfi)
 	#---------------------------------------------------------
 
 	#---------------- Read and save samples --------------------------
-	with h5py.File(file_samp,'r') as hf:
-		for ID in hf.keys():
-			h5.create_dataset(ID,data=np.array(hf.get(ID)))
+	store = pd.HDFStore(file_samp)
+	for ID in store.keys():
+		store.get(ID).to_hdf(file_samples,key=ID,mode="a")
+	store.close()
 	#-----------------------------------------------------------------
+
 h5.close()
 
-#------- Join data frames -------------------------
-df = reduce(lambda left,right: pd.merge(left,right,on=identifier), dfs)
+#------- Concatenate data frames -------------------------
+df = pd.concat(dfs)
 
 #------------- Save statistics ---------------------
-df.set_index(identifier,inplace=True)
 df.to_csv(file_stats)
