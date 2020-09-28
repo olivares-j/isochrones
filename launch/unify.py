@@ -17,7 +17,7 @@ dfs = []
 for i in range(1,size+1):
 	#------------- Files ---------------------------------------------
 	file_samp  = dir_base + "samples_{0}_of_{1}.h5".format(i,size)
-	file_stat  = dir_base + "statistics_{0}_of_{1}.csv".format(,size)
+	file_stat  = dir_base + "statistics_{0}_of_{1}.csv".format(i,size)
 	#-----------------------------------------------------------------
 
 	#------------- Load data frames into list --------------------------------
