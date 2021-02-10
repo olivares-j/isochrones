@@ -58,5 +58,17 @@ limit_BP = 15.0
 n_obs_min = 3 # Minimum number of observed bands
 
 add_unc = 0.0
+#-------------------------------------------------
+
+#-------- Av Prior ------------------------------------------
+# Assumed Gaussian in Av units
+prior_Av = {"loc":1.5,"scale":1.0,"lower":0.0,"upper":6.0}
+#------------------------------------------------------------
+
+#-------- Distance prior --------------------------------------
+# Assumed Gaussian in parsec units
+prior_distance = {"loc":310.,"scale":100,"lower":0,"upper":1000}
+#--------------------------------------------------------------
+
 
 
