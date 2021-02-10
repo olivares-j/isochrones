@@ -4,19 +4,19 @@ size = 25
 #------------------------------------------------
 
 #--------------- Observables ----------------------------------
-identifier   = "GDR2_ID"
+identifier   = "source_id"
 
 gaia_mod     = ["parallax","BP","G","RP"]
-gaia_obs     = ["parallax","BP","G","RP"]
-gaia_unc     = ["parallax_error","e_BP","e_G","e_RP"]
+gaia_obs     = ["parallax","bp","g","rp"]
+gaia_unc     = ["parallax_error","bp_error","g_error","rp_error"]
 
 dosmass_mod  = ["J","H","K"]
-dosmass_obs  = ["J","H","Ks"]
-dosmass_unc  = ["e_J","e_H","e_Ks"]
+dosmass_obs  = ["Jmag","Hmag","Kmag"]
+dosmass_unc  = ["e_Jmag","e_Hmag","e_Kmag"]
 
 panstar_mod  = ["PS_g", "PS_r", "PS_i", "PS_z","PS_y"]
-panstar_obs  = ["g_sdss","r_sdss","i_sdss","z_sdss","Y"]
-panstar_unc  = ["e_g_sdss","e_r_sdss","e_i_sdss","e_z_sdss","e_Y"]
+panstar_obs  = ["gmag","rmag","imag","zmag","ymag"]
+panstar_unc  = ["e_gmag","e_rmag","e_imag","e_zmag","e_ymag"]
 
 parameters   = ["age","mass","distance","AV"]
 #---------------------------------------------------------------
@@ -41,22 +41,22 @@ stats_names = sum([[identifier],["mean_"+p for p in parameters],
 #--------------------------------------------------------------
 
 #------------ Files -------------------------------
-dir_base   = "/raid/jromero/OCs/USco/Isochrones"
+dir_base   = "/raid/jromero/OCs/Perseus"
 dir_data   = dir_base + "/data/"
 dir_chain  = dir_base + "/chains/"
 dir_plots  = dir_base + "/plots/"
-file_data  = dir_data + "members_GDR2_p05.csv"
+file_data  = dir_data + "members_test_7+2MASS+PanSTARRS.csv"
 #---------------------------------------------------
 
 #------- Miscelanea -------
 nan_values = 99.0
 
 # These are the filtering values of BP
-label_BP = "BP"
+label_BP = "bp"
 limit_BP = 15.0
 
 n_obs_min = 3 # Minimum number of observed bands
 
-add_unc = 0.05
+add_unc = 0.0
 
 
