@@ -9,8 +9,8 @@ from Globals import *
 
 
 #------------ Files -------------------------------------------------
-file_samples = dir_base + "samples_all.h5"
-file_stats   = dir_base + "statistics_all.csv"
+file_samples = dir_base + "/samples_all.h5"
+file_stats   = dir_base + "/statistics_all.csv"
 
 h5 = h5py.File(file_samples,'w')
 
