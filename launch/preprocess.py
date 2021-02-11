@@ -8,6 +8,7 @@ from Globals import *
 os.makedirs(dir_data,exist_ok=True)
 os.makedirs(dir_chain,exist_ok=True)
 os.makedirs(dir_plots,exist_ok=True)
+os.makedirs(dir_outs,exist_ok=True)
 
 #------------- Load data ----------------------------------
 df = pd.read_csv(file_data,usecols=columns_data)
