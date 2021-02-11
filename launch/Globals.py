@@ -49,16 +49,16 @@ dir_outs   = dir_base + "outputs/"
 file_data  = dir_data + "members_test_7+2MASS+PanSTARRS.csv"
 #---------------------------------------------------
 
-#------- Miscelanea -------
+#------- Miscellanea -------
 nan_values = 99.0
 
 # These are the filtering values of BP
 label_BP = "bp"
 limit_BP = 15.0
 
-n_obs_min = 3 # Minimum number of observed bands
-
-add_unc = 0.05
+n_obs_min = 3   # Minimum number of observed bands
+add_unc = 0.05  # Add uncertainty
+nan_unc = 1.0   # If uncertainty is missing (but not the value)
 #-------------------------------------------------
 
 #-------- Av Prior ------------------------------------------

@@ -25,11 +25,16 @@ if len(idx) > 0:
 	df.loc[df.iloc[idx].index,label_BP] = np.nan
 #----------------------------------------------------------
 
-#---- Set as missing if band or uncertainty are missing ---
+#---- Set uncertainty as missing if band is missing ---
 for ob,un in zip(phot_obs,phot_unc):
-	mask = np.isnan(df.loc[:,ob]) | np.isnan(df.loc[:,un])
-	df.loc[mask,[ob,un]] = np.nan
-	# print("{0}: {1}".format(ob,sum(mask)))
+	mask = np.isnan(df.loc[:,ob])
+	df.loc[mask,un] = np.nan
+#----------------------------------------------------------
+
+#---- Set uncertainty to nan_unc if missing ---
+for un in phot_unc:
+	mask = np.isnan(df.loc[:,un])
+	df.loc[mask,un] = nan_unc
 #----------------------------------------------------------
 
 #--- Remove objects with less than n_obs_min bands --------
