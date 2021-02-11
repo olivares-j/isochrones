@@ -23,17 +23,17 @@ PATH_OUT="$(grep -m 1 dir_base $GLOBALS | awk '{print $3}')"
 
 #------- Pre processing ----------------------------------------------------
 echo "Preprocessing catalogue ..."
-python preprocess.py 
+# python preprocess.py 
 
 #---------------- Launch -----------------------------------------------
 for PRC in $(eval echo "{1..$TNP}")
 do
 	echo "Launching part $PRC of $TNP"
-	LOG_OUT=$(eval echo "$PATH_OUT/log_out_$PRC_of_$TNP")
-	LOG_ERR=$(eval echo "$PATH_OUT/log_error_$PRC_of_$TNP")
+	LOG_OUT=$(eval echo "$PATH_OUT"log_out_"$PRC"_of_"$TNP")
+	# LOG_ERR=$(eval echo "$PATH_OUT"log_error_"$PRC"_of_"$TNP")
 	echo $LOG_OUT
-	echo $LOG_ERR
-	sleep 5
+	# echo $LOG_ERR
+	sleep 1
 	# sed s/XXX/$PRC/g fit.py > tmp.py
 	# python tmp.py >> $LOG_OUT 2>> $LOG_ERR &
 	# sleep 30
