@@ -31,8 +31,11 @@ do
 	echo "Launching part $PRC of $TNP"
 	LOG_OUT=$(eval echo "$PATH_OUT/log_out_$PRC_of_$TNP")
 	LOG_ERR=$(eval echo "$PATH_OUT/log_error_$PRC_of_$TNP")
-	sed s/XXX/$PRC/g fit.py > tmp.py
-	python tmp.py >> $LOG_OUT 2>> $LOG_ERR &
-	sleep 30
-	rm tmp.py
+	echo $LOG_OUT
+	echo $LOG_ERR
+	sleep 5
+	# sed s/XXX/$PRC/g fit.py > tmp.py
+	# python tmp.py >> $LOG_OUT 2>> $LOG_ERR &
+	# sleep 30
+	# rm tmp.py
 done
