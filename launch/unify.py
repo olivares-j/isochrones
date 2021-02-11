@@ -9,8 +9,8 @@ from Globals import *
 
 
 #------------ Files -------------------------------------------------
-file_samples = dir_base + "samples_all.h5"
-file_stats   = dir_base + "statistics_all.csv"
+file_samples = dir_outs + "samples_all.h5"
+file_stats   = dir_outs + "statistics_all.csv"
 
 h5 = h5py.File(file_samples,'w')
 
@@ -18,8 +18,8 @@ h5 = h5py.File(file_samples,'w')
 dfs = []
 for i in range(1,size+1):
 	#------------- Files ---------------------------------------------
-	file_samp  = dir_base + "samples_{0}_of_{1}.h5".format(i,size)
-	file_stat  = dir_base + "statistics_{0}_of_{1}.csv".format(i,size)
+	file_samp  = dir_outs + "samples_{0}_of_{1}.h5".format(i,size)
+	file_stat  = dir_outs + "statistics_{0}_of_{1}.csv".format(i,size)
 	#-----------------------------------------------------------------
 
 	#------------- Load data frames into list --------------------------------

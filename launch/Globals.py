@@ -45,6 +45,7 @@ dir_base   = "/raid/jromero/OCs/Perseus/" #Don't forget / at the end
 dir_data   = dir_base + "data/"
 dir_chain  = dir_base + "chains/"
 dir_plots  = dir_base + "plots/"
+dir_outs   = dir_base + "outputs/"
 file_data  = dir_data + "members_test_7+2MASS+PanSTARRS.csv"
 #---------------------------------------------------
 

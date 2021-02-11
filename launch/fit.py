@@ -25,8 +25,8 @@ mist = get_ichrone('mist', bands=bands)
 
 #------------ Files -------------------------------------------------
 file_chunk = dir_data + "data_{0}_of_{1}.csv".format(XXX,size)
-file_samp  = dir_base + "samples_{0}_of_{1}.h5".format(XXX,size)
-file_stat  = dir_base + "statistics_{0}_of_{1}.csv".format(XXX,size)
+file_samp  = dir_outs + "samples_{0}_of_{1}.h5".format(XXX,size)
+file_stat  = dir_outs + "statistics_{0}_of_{1}.csv".format(XXX,size)
 #-------------------------------------------------------------------
 
 #------------- Load data --------------------------------
