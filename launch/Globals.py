@@ -58,7 +58,7 @@ limit_BP = 15.0
 
 n_obs_min = 3 # Minimum number of observed bands
 
-add_unc = 0.0
+add_unc = 0.05
 #-------------------------------------------------
 
 #-------- Av Prior ------------------------------------------
