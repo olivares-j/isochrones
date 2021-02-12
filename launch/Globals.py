@@ -22,7 +22,7 @@ panstar_mod  = ["PS_g", "PS_r", "PS_i", "PS_z","PS_y"]
 panstar_obs  = ["gmag","rmag","imag","zmag","ymag"]
 panstar_unc  = ["e_gmag","e_rmag","e_imag","e_zmag","e_ymag"]
 
-parameters   = ["age","mass","distance","AV"]
+parameters   = ["age","mass","distance","AV","Teff"]
 #---------------------------------------------------------------
 
 #-------------- Transform lists -------------------------------
