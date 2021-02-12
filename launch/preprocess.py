@@ -31,9 +31,9 @@ for ob,un in zip(phot_obs,phot_unc):
 	df.loc[mask,un] = np.nan
 #----------------------------------------------------------
 
-#---- Set uncertainty to nan_unc if missing ---
-for un in phot_unc:
-	mask = np.isnan(df.loc[:,un])
+#- Set uncertainty to nan_unc if band is observed ---
+for ob,un in zip(phot_obs,phot_unc):
+	mask = np.isnan(df.loc[:,un]) & np.isfinite(df.loc[:,ob])
 	df.loc[mask,un] = nan_unc
 #----------------------------------------------------------
 
