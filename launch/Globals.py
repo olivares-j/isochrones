@@ -1,7 +1,11 @@
 #----------- Split ------------------------------
 # Number of processes/parts to partition the data
-size = 25
+size = 1
 #------------------------------------------------
+
+#--------- Sources -----------------
+n_sources = None # Use None to select all sources in file_data
+#--------------------------
 
 #--------------- Observables ----------------------------------
 identifier   = "source_id"

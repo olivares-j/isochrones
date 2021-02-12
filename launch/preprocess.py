@@ -11,7 +11,7 @@ os.makedirs(dir_plots,exist_ok=True)
 os.makedirs(dir_outs,exist_ok=True)
 
 #------------- Load data ----------------------------------
-df = pd.read_csv(file_data,usecols=columns_data)
+df = pd.read_csv(file_data,usecols=columns_data,nrows=n_sources)
 df.replace(to_replace=nan_values,value=np.nan,inplace=True)
 df.set_index(identifier,inplace=True)
 n_init = len(df)
