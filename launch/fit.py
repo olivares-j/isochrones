@@ -14,7 +14,7 @@ import seaborn as sns
 from Globals import *
 
 #-------------- Get the isochrones ----------------------------
-mist = get_ichrone('mist', bands=bands)
+mist = get_ichrone('mist')#, bands=bands)
 
 #------- This prints the available photometry ------------------
 mass, age, feh = (1.03, 9.72, -0.11)
