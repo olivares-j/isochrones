@@ -1,0 +1,13 @@
+##############
+How to install isochrones
+First, check isochrones/.ci/travis.sh to verify no new requirements.
+
+conda create -n isochrones python=3.8
+conda activate isochrones
+conda install -c conda-forge numpy numba cython pytables pandas multinest pymultinest pytest codecov extension-helpers flaky astropy
+conda install -c anaconda jinja2 seaborn
+
+
+python setup.py install
+
+python scripts/mist-initialize.py
