@@ -15,12 +15,11 @@ from Globals import *
 
 #-------------- Get the isochrones ----------------------------
 mist = get_ichrone('mist',bands=bands)
-mist.initialize()
 
 #------- This prints the available photometry ------------------
-mass, age, feh = (1.03, 9.72, -0.11)
-print(mist.generate(mass, age, feh, return_dict=True))
-sys.exit()
+# mass, age, feh = (1.03, 9.72, -0.11)
+# print(mist.generate(mass, age, feh, return_dict=True))
+# sys.exit()
 #---------------------------------------------------------------
 
 #------------ Files -------------------------------------------------
